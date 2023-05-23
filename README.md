@@ -14,6 +14,7 @@ We did some research and realised that it was not uncommon as the study from 201
 Thus, we had the inspiration to create this app which would have reduce the amount of food waste generated from households due to expired food forgotten and overbought.
 
 **User Stories**
+
 "As a student who shares a common fridge in hall, I want to be able to remember what items I have thrown in the fridge as they are often squeezed out of sight."
 
 "As an environmentalist who is concerned about food wastage, I want to be able to avoid wasting food because they are forgotten."
