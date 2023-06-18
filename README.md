@@ -1,7 +1,6 @@
 # JustIn-Time
 **Orbital Group:** 5685
-**Proposed Level of Achievement:** Apollo
-Milestone 1
+**Proposed Level of Achievement:** Gemini
 
 ## Project Scope
 (one sentence + longer descriptive version)
