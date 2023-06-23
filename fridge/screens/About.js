@@ -1,16 +1,61 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
 
-export default function About() {
+const About = () => {
   return (
     <View style={styles.container}>
-      <Text>About Screen</Text>
+      <Text style={styles.heading}>
+        About <Text style={styles.justintime}>Justin Time</Text>
+      </Text>
+      <Text style={styles.paragraph}>
+        Groceries are often forgotten when they are hidden away deep in the
+        fridge/cabinet, leaving them to spoil and thrown away upon expiry,
+        resulting in food wastage.
+      </Text>
+      <Text style={styles.paragraph}>
+        JustIn Time allows users to keep track of their perishables, through
+        reminders when nearing expiry, providing recipes and replenishment
+        recommendations based on available groceries and consumption habits.
+      </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    flex: 1,
+    //justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  paragraph: {
+    fontSize: 14,
+    //textAlign: "center",
+  },
+  justintime: {
+    color: "#e28743",
   },
 });
+
+export default About;
+
+// export default function About() {
+//   return (
+//     <View style={styles.container}>
+//       <Text>About Justin Time</Text>
+
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     padding: 24,
+//   },
+// });
