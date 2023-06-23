@@ -49,7 +49,7 @@ const renderItem = ({ item }) => {
   );
 };
 
-export default function Pantry({ navigation }) {
+export default function Freezer({ navigation }) {
   return (
     //top tab navigator
     <View style={styles.container}>
@@ -158,15 +158,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 4,
     backgroundColor: "#FFFFFF",
-    borderBottomColor: "#e28743",
+    borderBottomColor: "#FFFFFF",
     borderBottomWidth: 4,
-    borderTopLeftRadius: 4,
   },
   freezerbutton: {
     paddingHorizontal: 16,
     paddingVertical: 4,
     backgroundColor: "#FFFFFF",
-    borderBottomColor: "#FFFFFF",
+    borderBottomColor: "#e28743",
     borderBottomWidth: 4,
   },
   sliderText: {
