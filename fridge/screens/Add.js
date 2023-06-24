@@ -10,10 +10,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import Input from '../components/Input';
 import { useNavigation } from "@react-navigation/native";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-var ImagePicker = require("react-native-image-picker");
+import * as ImagePicker from 'expo-image-picker';
 
 export default function Add({ navigation, route }) {
   //useState calls the function to change the variable stated
@@ -53,20 +51,31 @@ export default function Add({ navigation, route }) {
     mediaType: "photo",
   };
 
-  const openCamera = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      const result = await ImagePicker.launchCamera(options);
-      setCameraPhoto(result.assets[0].uri);
+  async function openCamera() {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setCameraPhoto(result.uri);
     }
-  };
+  }
 
-  const openGallery = async () => {
-    const result = await ImagePicker.launchImageLibrary(options);
-    setGalleryPhoto(result.assets[0].uri);
-  };
+  async function openGallery() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setCameraPhoto(result.uri);
+    }
+    console.log(result.uri)
+  }
+
 
   return (
     /* addContainer containers entire screen and splitted into 2 components, 
@@ -82,18 +91,18 @@ export default function Add({ navigation, route }) {
         />
       </View>
       <View>
-          <Text style={styles.label}>Item</Text>
-          <TextInput value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
-        </View>
-        <View>
-          <Text style={styles.label}>Expiry Date</Text>
-          <TextInput value={enteredExp} style={styles.input} onChangeText={expInputHandler} />
-        </View>     
-        <View>
-          <Text style={styles.label}>Quant</Text>
-          <TextInput value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
-        </View>
-      <TouchableOpacity onPress={openCamera} style={styles.button}>
+        <Text style={styles.label}>Item</Text>
+        <TextInput value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
+      </View>
+      <View>
+        <Text style={styles.label}>Expiry Date</Text>
+        <TextInput value={enteredExp} style={styles.input} onChangeText={expInputHandler} />
+      </View>
+      <View>
+        <Text style={styles.label}>Quant</Text>
+        <TextInput value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
+      </View>
+      <TouchableOpacity onPress={() => openCamera()} style={styles.button}>
         <Text style={styles.buttonText}>Open Camera</Text>
       </TouchableOpacity>
 
