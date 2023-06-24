@@ -2,13 +2,13 @@ import { StyleSheet, FlatList, Text, View, Pressable, Dimensions, Image } from '
 import { useNavigation } from '@react-navigation/native';
 
 
-const FoodItem=({ name, exp, id, quant, navigation, handler }) => (
+const FoodItem=({ name, exp, id, quant, navigation, image, handler }) => (
         <Pressable
             onLongPress={() => {handler({id:id})}}
             style={({ pressed }) => pressed && styles.pressed}
         >
             <View style={styles.card}>
-                {/* <Image source={item.image} style={styles.itemImage} /> */}
+                <Image source={{ uri: image }} style={styles.itemImage} />
                 <Text style={styles.itemText}>{name}</Text>
                 <Text style={styles.itemText}>{exp}</Text>
                 <Text style={styles.itemText}>{quant}</Text>                
@@ -23,11 +23,12 @@ function PantryList({ food, navigation, deleteHandler }) {
             data={food}
             renderItem={({ item }) => <FoodItem 
             name={item.item} 
-            exp={item.exp} q
+            exp={item.exp} 
             quant={item.quant} 
             id={item.id} 
             handler={deleteHandler} 
             navigation={navigation} 
+            image={item.image}
             />}
             keyExtractor={(item) => item.id}
             numColumns={3}
@@ -53,9 +54,10 @@ const styles = StyleSheet.create({
         opacity: 0.75
     },
     itemImage: {
-        width: 50,
-        height: 50,
-        resizeMode: "contain",
+        width: 75,
+        height: '50%',
+        borderRadius: 10,
+        //resizeMode: "contain",
         alignSelf: "center",
     },
     itemText: {
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: "white",
-        height: 115,
+        height: 150,
         width:width,
         marginHorizontal: 5,
         marginBottom: 10,
