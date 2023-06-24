@@ -8,56 +8,64 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  ScrollView
 } from "react-native";
+import PantryList from "../components/PantryList";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const width = Dimensions.get("screen").width / 3 - 28;
 
-const items = [
-  {
-    id: "1",
-    name: "Fruits",
-    image: require("../assets/fruit.png"),
-  },
-  {
-    id: "2",
-    name: "Beverages",
-    image: require("../assets/water-bottle.png"),
-  },
-  {
-    id: "3",
-    name: "Meat",
-    image: require("../assets/meat.png"),
-  },
-  {
-    id: "4",
-    name: "Condiments",
-    image: require("../assets/condiments.png"),
-  },
-  {
-    id: "5",
-    name: "Vegetables",
-    image: require("../assets/broccoli.png"),
-  },
-  // Add more items here
-];
+function Pantry({ navigation }) {
+  //entriesAdded is the list of items to be displayed
+  const [entriesAdded, outputEntry] = useState([]);
 
-const renderItem = ({ item }) => {
-  return (
-    <View style={styles.card}>
-      <Image source={item.image} style={styles.itemImage} />
-      <Text style={styles.itemText}>{item.name}</Text>
-    </View>
-  );
-};
+  useEffect(() => {
+    getUser()
+  }, []);
 
-export default function Pantry({ navigation }) {
+  async function handler({ newEntry }) {
+    const updatedEntries = [...entriesAdded, newEntry]
+    outputEntry(oldEntry => [...oldEntry, newEntry]);
+    console.log(entriesAdded)
+    await storeUser(updatedEntries)
+  }
+
+  async function deleteHandler({ id }) {
+    const filteredData = entriesAdded.filter(item => item.id !== id);
+    console.log(filteredData)
+    console.log(id)
+    outputEntry(filteredData)
+    await storeUser(filteredData)
+  }
+
+  // storing data
+  const storeUser = async (value) => {
+    try {
+      await AsyncStorage.setItem("user", JSON.stringify(value ? value : []));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // getting data
+  const getUser = async () => {
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("user"))
+      //console.log(userData)
+      outputEntry(userData ? userData : [])
+      console.log(entriesAdded)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    //top tab navigator
     <View style={styles.container}>
       <View style={styles.topBar}>
         <TouchableOpacity
           onPress={() => navigation.push("Pantry")}
-          style={styles.fridgebutton}
-        >
+          style={styles.fridgebutton} >
           <Text style={styles.sliderText}>Fridge</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -67,30 +75,31 @@ export default function Pantry({ navigation }) {
           <Text style={styles.sliderText}>Freezer</Text>
         </TouchableOpacity>
       </View>
+      <ScrollView>
+        {/* flatlist */}
+        <View style={styles.fridge}>
+          <PantryList
+            food={entriesAdded}
+            deleteHandler={deleteHandler} />
 
-      {/* flatlist */}
-      <View style={styles.fridge}>
-        <FlatList
-          data={items}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          key={"."}
-          numColumns={3}
-        />
-
-        {/* 'add' button */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Add")}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Add</Text>
-          </TouchableOpacity>
+          {/* 'add' button */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={
+                () => { navigation.navigate("Add", { handler: handler, id: entriesAdded.length == 0 ? 0 : entriesAdded[entriesAdded.length - 1].id + 1 }); }}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Add</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
-  );
+  )
 }
+
+
+export default Pantry;
 
 const styles = StyleSheet.create({
   container: {
@@ -173,5 +182,5 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 16,
     fontWeight: "bold",
-  },
+  }
 });

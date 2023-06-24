@@ -29,7 +29,8 @@ export default function Login({ navigation }) {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Pantry")}
+          //on press it will call a function that calls navigation.navigate that will move user to Pantry component
+          onPress={() => navigation.navigate("Pantry")} 
           style={styles.button}
         >
           <Text style={styles.buttonText}>Next</Text>
