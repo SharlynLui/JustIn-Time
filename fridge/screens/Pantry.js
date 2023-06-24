@@ -27,14 +27,14 @@ function Pantry({ navigation }) {
   async function handler({ newEntry }) {
     const updatedEntries = [...entriesAdded, newEntry]
     outputEntry(oldEntry => [...oldEntry, newEntry]);
-    console.log(entriesAdded)
+    console.log('handler', entriesAdded)
     await storeUser(updatedEntries)
   }
 
   async function deleteHandler({ id }) {
     const filteredData = entriesAdded.filter(item => item.id !== id);
-    console.log(filteredData)
-    console.log(id)
+    console.log('deleteHandler', filteredData)
+    console.log('id', id)
     outputEntry(filteredData)
     await storeUser(filteredData)
   }
@@ -75,25 +75,29 @@ function Pantry({ navigation }) {
           <Text style={styles.sliderText}>Freezer</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      <View>
+        {/* 'add' button */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={
+              () => { navigation.navigate("Add", { handler: handler, id: entriesAdded.length == 0 ? 0 : entriesAdded[entriesAdded.length - 1].id + 1 }); }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Add</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* flatlist */}
         <View style={styles.fridge}>
-          <PantryList
-            food={entriesAdded}
-            deleteHandler={deleteHandler} />
-
-          {/* 'add' button */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={
-                () => { navigation.navigate("Add", { handler: handler, id: entriesAdded.length == 0 ? 0 : entriesAdded[entriesAdded.length - 1].id + 1 }); }}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
+          <View>
+            <PantryList
+              food={entriesAdded}
+              deleteHandler={deleteHandler} />
           </View>
+
+
         </View>
-      </ScrollView>
+      </View>
     </View>
   )
 }
@@ -103,12 +107,13 @@ export default Pantry;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   fridge: {
-    flex: 4,
+    //flex: 4,
+    height: '75%',
     padding: 10,
     borderRadius: 20,
     backgroundColor: "#E0E6EC",
@@ -134,14 +139,15 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "bold",
     textAlign: "center",
-    resizeMode: "contain",
+    //resizeMode: "contain",
   },
   //for add button
   buttonContainer: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    padding: 10,
+    height: '15%'
   },
   button: {
     backgroundColor: "#e28743",
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
   },
   //for slider bar
   topBar: {
-    height: 50,
+    height: '10%',
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     flexDirection: "row",

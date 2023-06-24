@@ -2,32 +2,33 @@ import { StyleSheet, FlatList, Text, View, Pressable, Dimensions, Image } from '
 import { useNavigation } from '@react-navigation/native';
 
 
-function FoodItem({ item, navigation, handler }) {
-
-    function tabPressHandler() { //delete item and go back in this function
-        handler({ id: item.id })
-    }
-
-    return (
+const FoodItem=({ name, exp, id, quant, navigation, handler }) => (
         <Pressable
-            onLongPress={tabPressHandler}
+            onLongPress={() => {handler({id:id})}}
             style={({ pressed }) => pressed && styles.pressed}
         >
             <View style={styles.card}>
-                <Image source={item.image} style={styles.itemImage} />
-                <Text style={styles.itemText}>{item.name}</Text>
+                {/* <Image source={item.image} style={styles.itemImage} /> */}
+                <Text style={styles.itemText}>{name}</Text>
+                <Text style={styles.itemText}>{exp}</Text>
+                <Text style={styles.itemText}>{quant}</Text>                
             </View>
         </Pressable>
-    )
-}
+);
 
 function PantryList({ food, navigation, deleteHandler }) {
-    console.log(food)
+    console.log('food', food)
     return (
         <FlatList
-            nestedScrollEnabled={true}
             data={food}
-            renderItem={({ item }) => <FoodItem item={item} handler={deleteHandler} navigation={navigation} />}
+            renderItem={({ item }) => <FoodItem 
+            name={item.item} 
+            exp={item.exp} q
+            quant={item.quant} 
+            id={item.id} 
+            handler={deleteHandler} 
+            navigation={navigation} 
+            />}
             keyExtractor={(item) => item.id}
             numColumns={3}
         />
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: "bold",
         textAlign: "center",
-        resizeMode: "contain",
+        //resizeMode: "contain",
     },
     card: {
         backgroundColor: "white",
