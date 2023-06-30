@@ -23,7 +23,7 @@ export default function Login({ navigation }) {
       <View style={styles.spacing}>
         <Text style={styles.titleText}>Welcome to JustinTime!</Text>
         <Text style={styles.subheading}>
-          organise your pantry in just a click
+          Organise your pantry in just a click
         </Text>
       </View>
 
@@ -51,9 +51,10 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 25,
     textAlign: "center",
+    padding: 15,
   },
   subheading: {
-    fontSize: 14,
+    fontSize: 18,
     textAlign: "center",
   },
   spacing: {
@@ -82,13 +83,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#e28743",
-    width: "100%",
+    width: "70%",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
   },
   buttonOutline: {
-    backgroundColor: "white",
+    padding: 15,
     marginTop: 5,
     borderColor: "#f1b873",
     borderWidth: 0,
@@ -96,11 +97,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 20,
   },
   buttonOutlineText: {
     color: "#f1b873",
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 18,
   },
 });

@@ -84,36 +84,60 @@ export default function Add({ navigation, route }) {
     */
     <View style={styles.addContainer}>
       <View style={styles.topRow}>
-        <Button title="Done"
+        <TouchableOpacity style={styles.button}
           onPress={
             () => { addEntryHandler() }
-          }
-        />
+            }
+            >
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <Text style={styles.label}>Item</Text>
-        <TextInput value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
+      <View style={styles.details}>
+        <Text style={styles.label}>Item:</Text>
+        <View style={styles.inputContainer}>
+        <TextInput placeholder="Type here..." value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
+        </View>
+        <Text style={styles.label}>Expiry Date:</Text>
+        <View style={styles.inputContainer}>
+        <TextInput placeholder="Type here..." value={enteredExp} style={styles.input} onChangeText={expInputHandler} />
+        </View>
+        <Text style={styles.label}>Quantity:</Text>
+        <View style={styles.inputContainer}>
+        <TextInput placeholder="Type here..." value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
+        </View>
+        <Text style={styles.label}>Image: </Text>
       </View>
-      <View>
-        <Text style={styles.label}>Expiry Date</Text>
-        <TextInput value={enteredExp} style={styles.input} onChangeText={expInputHandler} />
+      <View style={styles.camera}>
+        <TouchableOpacity onPress={() => openCamera()} style={styles.button}>
+          <Text style={styles.buttonText}>Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={openGallery} style={styles.button}>
+          <Text style={styles.buttonText}>Gallery</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <Text style={styles.label}>Quant</Text>
-        <TextInput value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
-      </View>
-      <TouchableOpacity onPress={() => openCamera()} style={styles.button}>
-        <Text style={styles.buttonText}>Open Camera</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={openGallery} style={styles.button}>
-        <Text style={styles.buttonText}>Open Gallery</Text>
-      </TouchableOpacity>
     </View>
   )
 };
 
 const styles = StyleSheet.create({
+  details: {
+    height: '70%'
+  },
+  label: {
+    fontSize: 20,
+    marginLeft: 20
+  },
+  input: {
+    padding: 5,
+    fontSize: 20
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    padding: 15,
+    margin: 15,
+    borderRadius: 10,
+    height: '20%'
+  },
   container: {
     backgroundColor: "#ebebeb",
     flex: 1,
@@ -121,57 +145,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    backgroundColor: "#233f49",
-    paddingHorizontal: 50,
-    paddingVertical: 10,
-    marginTop: 50,
-    borderRadius: 5,
+    backgroundColor: '#e28743',
+    padding: 15,
+    margin: 5,
+    marginRight: 15,
+    marginLeft: 15,
+    borderRadius: 10,
+    alignItems: 'center'
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#ebebeb",
     fontWeight: "bold",
-  },
-  imageStyle: {
-    height: 150,
-    width: 150,
-    marginTop: 20,
-    borderRadius: 5,
+    justifyContent: 'centre'
   },
   addContainer: {
     flexDirection: 'column',
     padding: 5,
   },
   topRow: {
-    width: "30%",
-    padding: 10,
-  },
-  inputContainer: {
-    flexDirection: 'column',
-    width: '100%',
-    height: '90%',
-    // borderColor: 'black',
-    // borderWidth: 2,
-    padding: 10,
-  },
-  image: {
-    width: '100%',
-    height: '25%',
-    backgroundColor: '#cccccc',
-    borderTopRightRadius: 6,
-    borderTopLeftRadius: 6,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  details: {
-    backgroundColor: 'blue',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '100%',
-    height: '75%',
-    //paddingBottom: 10,
-    borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6
-  },
+    width: "40%",
+    marginLeft: 115, //could not get button to align centre so padded manually, adjust if needed
+    paddingTop: 10
+  }
 });
