@@ -13,6 +13,9 @@ import {
 } from "react-native";
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <View style={styles.container}>
       <Image
@@ -26,11 +29,27 @@ export default function Login({ navigation }) {
           Organise your pantry in just a click
         </Text>
       </View>
-
+      {/* key in email and password */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          style={styles.input}
+        ></TextInput>
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.input}
+          secureTextEntry
+        ></TextInput>
+      </View>
+      {/* next & about buttons */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           //on press it will call a function that calls navigation.navigate that will move user to Pantry component
-          onPress={() => navigation.navigate("Pantry")} 
+          onPress={() => navigation.navigate("Pantry")}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Next</Text>
