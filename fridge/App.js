@@ -6,6 +6,7 @@ import Pantry from "./screens/Pantry";
 import About from "./screens/About";
 import Add from "./screens/Add";
 import Freezer from "./screens/Freezer";
+import { app } from "./firebaseConfig";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,5 +25,3 @@ const App = () => {
 };
 
 export default App;
-
-

@@ -10,11 +10,33 @@ import {
   View,
   Button,
   Image,
+  useState,
 } from "react-native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth();
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with:", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <View style={styles.container}>
@@ -49,10 +71,19 @@ export default function Login({ navigation }) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           //on press it will call a function that calls navigation.navigate that will move user to Pantry component
-          onPress={() => navigation.navigate("Pantry")}
+          // onPress={() => navigation.navigate("Pantry")}
+          onPress={handleLogin}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Next</Text>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          //on press it will call a function to register new user
+          onPress={handleSignUp}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
