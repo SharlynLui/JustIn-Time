@@ -8,6 +8,7 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -81,16 +82,6 @@ export default function Add({ navigation, route }) {
     contains the component to add image and the details container for the rest.
     */
     <View style={styles.addContainer}>
-      <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            addEntryHandler();
-          }}
-        >
-          <Text style={styles.buttonText}>Done</Text>
-        </TouchableOpacity>
-      </View>
       <View style={styles.details}>
         <Text style={styles.label}>Item:</Text>
         <View style={styles.inputContainer}>
@@ -121,12 +112,33 @@ export default function Add({ navigation, route }) {
         </View>
         <Text style={styles.label}>Image: </Text>
       </View>
+
       <View style={styles.camera}>
-        <TouchableOpacity onPress={() => openCamera()} style={styles.button}>
-          <Text style={styles.buttonText}>Camera</Text>
+        <TouchableOpacity
+          onPress={() => openCamera()}
+          style={styles.cameraButton}
+        >
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/camera.png")}
+          ></Image>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openGallery} style={styles.button}>
-          <Text style={styles.buttonText}>Gallery</Text>
+        <TouchableOpacity onPress={openGallery} style={styles.cameraButton}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/gallery.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.topRow}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            addEntryHandler();
+          }}
+        >
+          <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -181,5 +193,23 @@ const styles = StyleSheet.create({
     width: "40%",
     marginLeft: 115, //could not get button to align centre so padded manually, adjust if needed
     paddingTop: 10,
+  },
+  camera: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    padding: 15,
+    margin: 15,
+    borderRadius: 10,
+    height: "13%",
+    alignItems: "center",
+  },
+  cameraButton: {
+    backgroundColor: "white",
+    padding: 15,
+    margin: 5,
+    marginRight: 15,
+    marginLeft: 15,
+    borderRadius: 10,
+    alignItems: "center",
   },
 });
