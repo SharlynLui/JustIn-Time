@@ -1,8 +1,7 @@
-import React from "react";
+import { React, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import {
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
@@ -12,10 +11,34 @@ import {
   Image,
 } from "react-native";
 
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { app, auth } from "../firebaseConfig";
+
 export default function Login({ navigation }) {
+  const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with:", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
 
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -29,7 +52,10 @@ export default function Login({ navigation }) {
           Organise your pantry in just a click
         </Text>
       </View>
-      {/* key in email and password */}
+      {/* <Text style={styles.subheading}> */}
+      {/*} key in email and password*/}
+      {/* </Text> */}
+
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -45,14 +71,23 @@ export default function Login({ navigation }) {
           secureTextEntry
         ></TextInput>
       </View>
-      {/* next & about buttons */}
+      {/* <Text>next & about buttons</Text> */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           //on press it will call a function that calls navigation.navigate that will move user to Pantry component
-          onPress={() => navigation.navigate("Pantry")}
+          // onPress={() => navigation.naviagate("Pantry")}
+          onPress={handleLogin}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Next</Text>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          //on press it will call a function to register new user
+          onPress={handleSignUp}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
