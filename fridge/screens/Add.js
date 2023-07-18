@@ -62,7 +62,7 @@ export default function Add({ navigation, route }) {
       aspect: [3, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setCameraPhoto(result.uri);
     }
   }
@@ -74,7 +74,7 @@ export default function Add({ navigation, route }) {
       aspect: [3, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setCameraPhoto(result.uri);
     }
     console.log(result.uri)
