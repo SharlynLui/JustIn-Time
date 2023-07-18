@@ -94,8 +94,6 @@ function Pantry({ navigation }) {
               food={entriesAdded}
               deleteHandler={deleteHandler} />
           </View>
-
-
         </View>
       </View>
     </View>

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
+import DatePicker from 'react-native-datepicker';
 
 export default function Add({ navigation, route }) {
   //useState calls the function to change the variable stated
@@ -21,6 +22,7 @@ export default function Add({ navigation, route }) {
   const [entriesAdded, outputEntry] = useState([]);
   const [cameraPhoto, setCameraPhoto] = useState('');
   const [galleryPhoto, setGalleryPhoto] = useState('');
+  const [enteredDate, setEnteredDate] = useState('');
 
   //functions to fetch user inputs as user types in the sections
   function itemInputHandler(enteredItem) {
@@ -32,6 +34,10 @@ export default function Add({ navigation, route }) {
   function quantInputHandler(enteredQuant) {
     setEnteredQuant(enteredQuant);
   }
+  function dateInputHandler(enteredDate) {
+    setEnteredDate(enteredDate);
+  }
+
   //function to output Entry
   function addEntryHandler() {
     const newEntry = {
@@ -77,11 +83,8 @@ export default function Add({ navigation, route }) {
   }
 
 
+
   return (
-    /* addContainer containers entire screen and splitted into 2 components, 
-    the topRow containing the done button and the inputContainer. The inputContainer
-    contains the component to add image and the details container for the rest.
-    */
     <View style={styles.addContainer}>
       <View style={styles.topRow}>
         <TouchableOpacity style={styles.button}
@@ -115,6 +118,21 @@ export default function Add({ navigation, route }) {
           <Text style={styles.buttonText}>Gallery</Text>
         </TouchableOpacity>
       </View>
+      <View>
+        <DatePicker
+        style = {{ width: 200}}
+        date={enteredDate}
+        mode="date"
+        placeholder="Select Date"
+        format="YYYY-MM-DD"
+        minDate="2023-01-01"
+        maxDate="2123-01-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        onDateChange={(date) => dateInputHandler(date)}
+        useNativeDriver
+        />
+      </View>
     </View>
   )
 };
@@ -141,12 +159,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ebebeb",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    //justifyContent: 'center',
   },
   button: {
     backgroundColor: '#e28743',
-    padding: 15,
+    padding: 10,
     margin: 5,
     marginRight: 15,
     marginLeft: 15,
@@ -154,10 +172,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#ebebeb",
     fontWeight: "bold",
-    justifyContent: 'centre'
+    justifyContent: 'center'
   },
   addContainer: {
     flexDirection: 'column',
