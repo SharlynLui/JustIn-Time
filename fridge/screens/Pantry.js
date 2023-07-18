@@ -8,11 +8,13 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import PantryList from "../components/PantryList";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuth, signOut } from "firebase/auth";
+import { app, auth } from "../firebaseConfig";
 
 const width = Dimensions.get("screen").width / 3 - 28;
 
@@ -21,22 +23,22 @@ function Pantry({ navigation }) {
   const [entriesAdded, outputEntry] = useState([]);
 
   useEffect(() => {
-    getUser()
+    getUser();
   }, []);
 
   async function handler({ newEntry }) {
-    const updatedEntries = [...entriesAdded, newEntry]
-    outputEntry(oldEntry => [...oldEntry, newEntry]);
-    console.log('handler', entriesAdded)
-    await storeUser(updatedEntries)
+    const updatedEntries = [...entriesAdded, newEntry];
+    outputEntry((oldEntry) => [...oldEntry, newEntry]);
+    console.log("handler", entriesAdded);
+    await storeUser(updatedEntries);
   }
 
   async function deleteHandler({ id }) {
-    const filteredData = entriesAdded.filter(item => item.id !== id);
-    console.log('deleteHandler', filteredData)
-    console.log('id', id)
-    outputEntry(filteredData)
-    await storeUser(filteredData)
+    const filteredData = entriesAdded.filter((item) => item.id !== id);
+    console.log("deleteHandler", filteredData);
+    console.log("id", id);
+    outputEntry(filteredData);
+    await storeUser(filteredData);
   }
 
   // storing data
@@ -51,13 +53,22 @@ function Pantry({ navigation }) {
   // getting data
   const getUser = async () => {
     try {
-      const userData = JSON.parse(await AsyncStorage.getItem("user"))
+      const userData = JSON.parse(await AsyncStorage.getItem("user"));
       //console.log(userData)
-      outputEntry(userData ? userData : [])
-      console.log(entriesAdded)
+      outputEntry(userData ? userData : []);
+      console.log(entriesAdded);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const auth = getAuth(app);
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.replace("Login");
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -65,7 +76,8 @@ function Pantry({ navigation }) {
       <View style={styles.topBar}>
         <TouchableOpacity
           onPress={() => navigation.push("Pantry")}
-          style={styles.fridgebutton} >
+          style={styles.fridgebutton}
+        >
           <Text style={styles.sliderText}>Fridge</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -79,8 +91,15 @@ function Pantry({ navigation }) {
         {/* 'add' button */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={
-              () => { navigation.navigate("Add", { handler: handler, id: entriesAdded.length == 0 ? 0 : entriesAdded[entriesAdded.length - 1].id + 1 }); }}
+            onPress={() => {
+              navigation.navigate("Add", {
+                handler: handler,
+                id:
+                  entriesAdded.length == 0
+                    ? 0
+                    : entriesAdded[entriesAdded.length - 1].id + 1,
+              });
+            }}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Add</Text>
@@ -90,28 +109,33 @@ function Pantry({ navigation }) {
         {/* flatlist */}
         <View style={styles.fridge}>
           <View>
-            <PantryList
-              food={entriesAdded}
-              deleteHandler={deleteHandler} />
+            <PantryList food={entriesAdded} deleteHandler={deleteHandler} />
           </View>
         </View>
       </View>
+      <TouchableOpacity onPress={handleSignOut} style={styles.signOutbutton}>
+        <Image
+          style={{ width: 30, height: 30 }}
+          source={require("../assets/logout.png")}
+        ></Image>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
-
 
 export default Pantry;
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
-    padding: 16,
-    backgroundColor: "white"
+    flex: 1,
+    flexDirection: "column",
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "white",
   },
   fridge: {
     //flex: 4,
-    height: '75%',
+    height: "75%",
     padding: 10,
     borderRadius: 20,
     backgroundColor: "#E0E6EC",
@@ -145,7 +169,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    height: '15%'
+    height: "15%",
   },
   button: {
     backgroundColor: "#e28743",
@@ -161,7 +185,7 @@ const styles = StyleSheet.create({
   },
   //for slider bar
   topBar: {
-    height: '10%',
+    height: "10%",
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     flexDirection: "row",
@@ -186,5 +210,11 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 16,
     fontWeight: "bold",
-  }
+  },
+  signOutbutton: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    bottom: 25,
+    marginRight: 70, //how to shift this left a bit...
+  },
 });

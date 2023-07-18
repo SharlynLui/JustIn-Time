@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -9,20 +8,24 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import DatePicker from 'react-native-datepicker';
 
+
 export default function Add({ navigation, route }) {
   //useState calls the function to change the variable stated
-  const [enteredItem, setEnteredItem] = useState('');
-  const [enteredExp, setEnteredExp] = useState('');
-  const [enteredQuant, setEnteredQuant] = useState('');
+  const [enteredItem, setEnteredItem] = useState("");
+  const [enteredExp, setEnteredExp] = useState("");
+  const [enteredQuant, setEnteredQuant] = useState("");
   const [entriesAdded, outputEntry] = useState([]);
+
   const [cameraPhoto, setCameraPhoto] = useState('');
   const [galleryPhoto, setGalleryPhoto] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
+
 
   //functions to fetch user inputs as user types in the sections
   function itemInputHandler(enteredItem) {
@@ -42,12 +45,12 @@ export default function Add({ navigation, route }) {
       item: enteredItem,
       date: enteredDate,
       quant: enteredQuant,
-      image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : '',
-      id: route.params.id
-    }
-    console.log(newEntry) //for debugging
-    route.params.handler({ newEntry: newEntry })
-    navigation.goBack()
+      image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : "",
+      id: route.params.id,
+    };
+    console.log(newEntry); //for debugging
+    route.params.handler({ newEntry: newEntry });
+    navigation.goBack();
   }
 
   let options = {
@@ -77,10 +80,8 @@ export default function Add({ navigation, route }) {
     if (!result.canceled) {
       setCameraPhoto(result.uri);
     }
-    console.log(result.uri)
+    console.log(result.uri);
   }
-
-
 
   return (
     <View style={styles.addContainer}>
@@ -115,40 +116,67 @@ export default function Add({ navigation, route }) {
         </View>
         <Text style={styles.label}>Quantity:</Text>
         <View style={styles.inputContainer}>
-          <TextInput placeholder="Type here..." value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
+
+          <TextInput
+            placeholder="Type here..."
+            value={enteredQuant}
+            style={styles.input}
+            onChangeText={quantInputHandler}
+          />
         </View>
         <Text style={styles.label}>Image: </Text>
       </View>
+
       <View style={styles.camera}>
-        <TouchableOpacity onPress={() => openCamera()} style={styles.button}>
-          <Text style={styles.buttonText}>Camera</Text>
+        <TouchableOpacity
+          onPress={() => openCamera()}
+          style={styles.cameraButton}
+        >
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/camera.png")}
+          ></Image>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openGallery} style={styles.button}>
-          <Text style={styles.buttonText}>Gallery</Text>
+        <TouchableOpacity onPress={openGallery} style={styles.cameraButton}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/gallery.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.topRow}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            addEntryHandler();
+          }}
+        >
+          <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
-};
+  );
+}
 
 const styles = StyleSheet.create({
   details: {
-    height: '70%'
+    height: "70%",
   },
   label: {
     fontSize: 20,
-    marginLeft: 20
+    marginLeft: 20,
   },
   input: {
     padding: 5,
-    fontSize: 20
+    fontSize: 20,
   },
   inputContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 15,
     margin: 15,
     borderRadius: 10,
-    height: '20%'
+    height: "20%",
   },
   container: {
     backgroundColor: "#ebebeb",
@@ -157,13 +185,13 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#e28743',
-    padding: 10,
+    backgroundColor: "#e28743",
+    padding: 15,
     margin: 5,
     marginRight: 15,
     marginLeft: 15,
     borderRadius: 10,
-    alignItems: 'center'
+    alignItems: "center",
   },
   buttonText: {
     fontSize: 15,
@@ -172,13 +200,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   addContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
     padding: 5,
   },
   topRow: {
     width: "40%",
     marginLeft: 115, //could not get button to align centre so padded manually, adjust if needed
-    paddingTop: 10
+    paddingTop: 10,
+  },
+  camera: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    padding: 15,
+    margin: 15,
+    borderRadius: 10,
+    height: "13%",
+    alignItems: "center",
+  },
+  cameraButton: {
+    backgroundColor: "white",
+    padding: 15,
+    margin: 5,
+    marginRight: 15,
+    marginLeft: 15,
+    borderRadius: 10,
+    alignItems: "center",
   },
   datePicker: {
     width: '100%'
