@@ -11,7 +11,9 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from 'expo-image-picker';
+import DatePicker from 'react-native-datepicker';
+
 
 export default function Add({ navigation, route }) {
   //useState calls the function to change the variable stated
@@ -19,24 +21,29 @@ export default function Add({ navigation, route }) {
   const [enteredExp, setEnteredExp] = useState("");
   const [enteredQuant, setEnteredQuant] = useState("");
   const [entriesAdded, outputEntry] = useState([]);
-  const [cameraPhoto, setCameraPhoto] = useState("");
-  const [galleryPhoto, setGalleryPhoto] = useState("");
+
+  const [cameraPhoto, setCameraPhoto] = useState('');
+  const [galleryPhoto, setGalleryPhoto] = useState('');
+  const [enteredDate, setEnteredDate] = useState('');
+
 
   //functions to fetch user inputs as user types in the sections
   function itemInputHandler(enteredItem) {
     setEnteredItem(enteredItem);
   }
-  function expInputHandler(enteredExp) {
-    setEnteredExp(enteredExp);
-  }
   function quantInputHandler(enteredQuant) {
     setEnteredQuant(enteredQuant);
   }
+  function dateInputHandler(enteredDate) {
+    setEnteredDate(enteredDate);
+    console.log('dateInputHandler', enteredDate)
+  }
+
   //function to output Entry
   function addEntryHandler() {
     const newEntry = {
       item: enteredItem,
-      exp: enteredExp,
+      date: enteredDate,
       quant: enteredQuant,
       image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : "",
       id: route.params.id,
@@ -58,7 +65,7 @@ export default function Add({ navigation, route }) {
       aspect: [3, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setCameraPhoto(result.uri);
     }
   }
@@ -70,39 +77,46 @@ export default function Add({ navigation, route }) {
       aspect: [3, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setCameraPhoto(result.uri);
     }
     console.log(result.uri);
   }
 
   return (
-    /* addContainer containers entire screen and splitted into 2 components, 
-    the topRow containing the done button and the inputContainer. The inputContainer
-    contains the component to add image and the details container for the rest.
-    */
     <View style={styles.addContainer}>
+      <View style={styles.topRow}>
+        <TouchableOpacity style={styles.button}
+          onPress={
+            () => { addEntryHandler() }
+          }
+        >
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.details}>
         <Text style={styles.label}>Item:</Text>
         <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Type here..."
-            value={enteredItem}
-            style={styles.input}
-            onChangeText={itemInputHandler}
-          />
+          <TextInput placeholder="Type here..." value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
         </View>
         <Text style={styles.label}>Expiry Date:</Text>
         <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Type here..."
-            value={enteredExp}
-            style={styles.input}
-            onChangeText={expInputHandler}
+          <DatePicker
+            style={styles.datePicker}
+            date={enteredDate}
+            mode="date"
+            placeholder="Select Date"
+            format="YYYY-MM-DD"
+            minDate="2023-01-01"
+            maxDate="2123-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            onDateChange={(date) => dateInputHandler(date)}
           />
         </View>
         <Text style={styles.label}>Quantity:</Text>
         <View style={styles.inputContainer}>
+
           <TextInput
             placeholder="Type here..."
             value={enteredQuant}
@@ -167,8 +181,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ebebeb",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    //justifyContent: 'center',
   },
   button: {
     backgroundColor: "#e28743",
@@ -180,10 +194,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#ebebeb",
     fontWeight: "bold",
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   addContainer: {
     flexDirection: "column",
@@ -212,4 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
+  datePicker: {
+    width: '100%'
+  }
 });

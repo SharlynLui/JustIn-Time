@@ -2,34 +2,43 @@ import { StyleSheet, FlatList, Text, View, Pressable, Dimensions, Image } from '
 import { useNavigation } from '@react-navigation/native';
 
 
-const FoodItem=({ name, exp, id, quant, navigation, image, handler }) => (
-        <Pressable
-            onLongPress={() => {handler({id:id})}}
-            style={({ pressed }) => pressed && styles.pressed}
-        >
-            <View style={styles.card}>
-                <Image source={{ uri: image }} style={styles.itemImage} />
-                <Text style={styles.itemText}>{name}</Text>
-                <Text style={styles.itemText}>{exp}</Text>
-                <Text style={styles.itemText}>{quant}</Text>                
-            </View>
-        </Pressable>
+const FoodItem = ({ name, date, id, quant, image, handler }) => (
+    <Pressable
+        onLongPress={() => { handler({ id: id }) }}
+        style={({ pressed }) => pressed && styles.pressed}
+    >
+        <View style={styles.card}>
+            <Image source={{ uri: image }} style={styles.itemImage} />
+            <Text style={styles.itemText}>{name}</Text>
+            <Text style={styles.itemText}>{date}</Text>
+            <Text style={styles.itemText}>{quant}</Text>
+        </View>
+    </Pressable>
 );
+
+
 
 function PantryList({ food, navigation, deleteHandler }) {
     console.log('food', food)
+    //display date according to expiry date
+    sortDates = (food) => {
+        return food.sort((a, b) => new Date(a.date) - new Date (b.date))
+    };
+    
+    sortedData = sortDates(food);
     return (
         <FlatList
-            data={food}
-            renderItem={({ item }) => <FoodItem 
-            name={item.item} 
-            exp={item.exp} 
-            quant={item.quant} 
-            id={item.id} 
-            handler={deleteHandler} 
-            navigation={navigation} 
-            image={item.image}
-            />}
+            data={sortedData}
+            renderItem={({ item }) =>
+                <FoodItem
+                    name={item.item}
+                    date={item.date}
+                    quant={item.quant}
+                    id={item.id}
+                    handler={deleteHandler}
+                    navigation={navigation}
+                    image={item.image}
+                />}
             keyExtractor={(item) => item.id}
             numColumns={3}
         />
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: "white",
         height: 150,
-        width:width,
+        width: width,
         marginHorizontal: 5,
         marginBottom: 10,
         borderRadius: 10,
