@@ -2,7 +2,7 @@ import { StyleSheet, FlatList, Text, View, Pressable, Dimensions, Image } from '
 import { useNavigation } from '@react-navigation/native';
 
 
-const FoodItem=({ name, exp, id, quant, navigation, image, handler }) => (
+const FoodItem=({ name, date, id, quant, image, handler }) => (
         <Pressable
             onLongPress={() => {handler({id:id})}}
             style={({ pressed }) => pressed && styles.pressed}
@@ -10,7 +10,7 @@ const FoodItem=({ name, exp, id, quant, navigation, image, handler }) => (
             <View style={styles.card}>
                 <Image source={{ uri: image }} style={styles.itemImage} />
                 <Text style={styles.itemText}>{name}</Text>
-                <Text style={styles.itemText}>{exp}</Text>
+                <Text style={styles.itemText}>{date}</Text>
                 <Text style={styles.itemText}>{quant}</Text>                
             </View>
         </Pressable>
@@ -23,7 +23,7 @@ function PantryList({ food, navigation, deleteHandler }) {
             data={food}
             renderItem={({ item }) => <FoodItem 
             name={item.item} 
-            exp={item.exp} 
+            date={item.date} 
             quant={item.quant} 
             id={item.id} 
             handler={deleteHandler} 

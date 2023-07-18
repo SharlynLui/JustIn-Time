@@ -28,21 +28,19 @@ export default function Add({ navigation, route }) {
   function itemInputHandler(enteredItem) {
     setEnteredItem(enteredItem);
   }
-  function expInputHandler(enteredExp) {
-    setEnteredExp(enteredExp);
-  }
   function quantInputHandler(enteredQuant) {
     setEnteredQuant(enteredQuant);
   }
   function dateInputHandler(enteredDate) {
     setEnteredDate(enteredDate);
+    console.log('dateInputHandler', enteredDate)
   }
 
   //function to output Entry
   function addEntryHandler() {
     const newEntry = {
       item: enteredItem,
-      exp: enteredExp,
+      date: enteredDate,
       quant: enteredQuant,
       image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : '',
       id: route.params.id
@@ -90,23 +88,34 @@ export default function Add({ navigation, route }) {
         <TouchableOpacity style={styles.button}
           onPress={
             () => { addEntryHandler() }
-            }
-            >
+          }
+        >
           <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.details}>
         <Text style={styles.label}>Item:</Text>
         <View style={styles.inputContainer}>
-        <TextInput placeholder="Type here..." value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
+          <TextInput placeholder="Type here..." value={enteredItem} style={styles.input} onChangeText={itemInputHandler} />
         </View>
         <Text style={styles.label}>Expiry Date:</Text>
         <View style={styles.inputContainer}>
-        <TextInput placeholder="Type here..." value={enteredExp} style={styles.input} onChangeText={expInputHandler} />
+          <DatePicker
+            style={styles.datePicker}
+            date={enteredDate}
+            mode="date"
+            placeholder="Select Date"
+            format="YYYY-MM-DD"
+            minDate="2023-01-01"
+            maxDate="2123-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            onDateChange={(date) => dateInputHandler(date)}
+          />
         </View>
         <Text style={styles.label}>Quantity:</Text>
         <View style={styles.inputContainer}>
-        <TextInput placeholder="Type here..." value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
+          <TextInput placeholder="Type here..." value={enteredQuant} style={styles.input} onChangeText={quantInputHandler} />
         </View>
         <Text style={styles.label}>Image: </Text>
       </View>
@@ -117,21 +126,6 @@ export default function Add({ navigation, route }) {
         <TouchableOpacity onPress={openGallery} style={styles.button}>
           <Text style={styles.buttonText}>Gallery</Text>
         </TouchableOpacity>
-      </View>
-      <View>
-        <DatePicker
-        style = {{ width: 200}}
-        date={enteredDate}
-        mode="date"
-        placeholder="Select Date"
-        format="YYYY-MM-DD"
-        minDate="2023-01-01"
-        maxDate="2123-01-01"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        onDateChange={(date) => dateInputHandler(date)}
-        useNativeDriver
-        />
       </View>
     </View>
   )
@@ -185,5 +179,8 @@ const styles = StyleSheet.create({
     width: "40%",
     marginLeft: 115, //could not get button to align centre so padded manually, adjust if needed
     paddingTop: 10
+  },
+  datePicker: {
+    width: '100%'
   }
 });
