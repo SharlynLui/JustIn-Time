@@ -1,14 +1,11 @@
 import React from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   View,
-  FlatList,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
 } from "react-native";
 import PantryList from "../components/PantryList";
 import { useState, useEffect } from "react";
@@ -214,7 +211,7 @@ const styles = StyleSheet.create({
   signOutbutton: {
     alignSelf: "flex-end",
     position: "absolute",
-    bottom: 25,
-    marginRight: 70, //how to shift this left a bit...
+    bottom: 10,
+    padding: 12, //how to shift this left a bit...
   },
 });
