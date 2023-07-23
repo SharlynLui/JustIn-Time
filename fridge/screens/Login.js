@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 25,
     textAlign: "center",
-    padding: 15,
+    padding: 10,
   },
   subheading: {
     fontSize: 18,
     textAlign: "center",
   },
   spacing: {
-    padding: 40,
+    padding: 10,
   },
   container: {
     flex: 1,
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    marginBottom: 10,
   },
   buttonContainer: {
     width: "60%",
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    margin: 10
   },
   buttonOutline: {
     padding: 15,

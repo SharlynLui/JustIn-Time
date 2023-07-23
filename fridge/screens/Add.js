@@ -12,20 +12,32 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
-import DatePicker from 'react-native-datepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+const exampleImage = require('../assets/food.png')
+const exampleImageUri = Image.resolveAssetSource(exampleImage).uri
 
 
 export default function Add({ navigation, route }) {
   //useState calls the function to change the variable stated
   const [enteredItem, setEnteredItem] = useState("");
-  const [enteredExp, setEnteredExp] = useState("");
-  const [enteredQuant, setEnteredQuant] = useState("");
-  const [entriesAdded, outputEntry] = useState([]);
-
+  const [enteredQuant, setEnteredQuant] = useState("0");
   const [cameraPhoto, setCameraPhoto] = useState('');
   const [galleryPhoto, setGalleryPhoto] = useState('');
-  const [enteredDate, setEnteredDate] = useState('');
+  const [enteredDate, setEnteredDate] = useState(new Date(Date.now()));
+  const [isPickerShow, setIsPickerShow] = useState(false);
 
+  const showPicker = () => {
+    setIsPickerShow(true);
+  }
+
+  const onDateChange = (event, value) => {
+    setEnteredDate(value);
+    if (Platform.OS === 'android') {
+      setIsPickerShow(false);
+    }
+  };
 
   //functions to fetch user inputs as user types in the sections
   function itemInputHandler(enteredItem) {
@@ -34,10 +46,7 @@ export default function Add({ navigation, route }) {
   function quantInputHandler(enteredQuant) {
     setEnteredQuant(enteredQuant);
   }
-  function dateInputHandler(enteredDate) {
-    setEnteredDate(enteredDate);
-    console.log('dateInputHandler', enteredDate)
-  }
+
 
   //function to output Entry
   function addEntryHandler() {
@@ -45,7 +54,7 @@ export default function Add({ navigation, route }) {
       item: enteredItem,
       date: enteredDate,
       quant: enteredQuant,
-      image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : "",
+      image: cameraPhoto ? cameraPhoto : galleryPhoto ? galleryPhoto : exampleImageUri,
       id: route.params.id,
     };
     console.log(newEntry); //for debugging
@@ -101,19 +110,33 @@ export default function Add({ navigation, route }) {
         </View>
         <Text style={styles.label}>Expiry Date:</Text>
         <View style={styles.inputContainer}>
-          <DatePicker
-            style={styles.datePicker}
-            date={enteredDate}
-            mode="date"
-            placeholder="Select Date"
-            format="YYYY-MM-DD"
-            minDate="2023-01-01"
-            maxDate="2123-01-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            onDateChange={(date) => dateInputHandler(date)}
-          />
-        </View>
+          <View >
+          <Text>{enteredDate.toDateString()}</Text>
+          </View>
+          </View>
+          {!isPickerShow ? (
+            <View>
+              <Button title ="Show Picker" color="black" onPress = {showPicker} />
+              </View>
+          ): (
+        <DateTimePicker
+          // style={styles.datePicker}
+          // date={enteredDate}
+          // mode="date"
+          // placeholder="Select Date"
+          // format="YYYY-MM-DD"
+          // minDate="2023-01-01"
+          // maxDate="2123-01-01"
+          // confirmBtnText="Confirm"
+          // cancelBtnText="Cancel"
+          // onDateChange={(date) => dateInputHandler(date)}
+          value={enteredDate}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          onChange={onDateChange}
+        />
+          )}
         <Text style={styles.label}>Quantity:</Text>
         <View style={styles.inputContainer}>
 
@@ -155,7 +178,7 @@ export default function Add({ navigation, route }) {
           <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 }
 
@@ -228,5 +251,13 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     width: '100%'
-  }
+  },
+  pickedDateContainer: {
+  },
+  pickedDate: {
+
+  },
+  btnContainer: {
+
+  },
 });

@@ -1,7 +1,7 @@
 import { StyleSheet, FlatList, Text, View, Pressable, Dimensions, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
+//to render item
 const FoodItem = ({ name, date, id, quant, image, handler }) => (
     <Pressable
         onLongPress={() => { handler({ id: id }) }}
@@ -10,12 +10,11 @@ const FoodItem = ({ name, date, id, quant, image, handler }) => (
         <View style={styles.card}>
             <Image source={{ uri: image }} style={styles.itemImage} />
             <Text style={styles.itemText}>{name}</Text>
-            <Text style={styles.itemText}>{date}</Text>
-            <Text style={styles.itemText}>{quant}</Text>
+            <Text style={ (date)-(Date.now())<7? styles.red: styles.itemText} >Expires on:{date !== null ? date.toLocaleDateString() : "No Date Input"}</Text>
+            <Text style={styles.itemText}>Quantity:{quant}</Text>
         </View>
     </Pressable>
 );
-
 
 
 function PantryList({ food, navigation, deleteHandler }) {
@@ -32,7 +31,7 @@ function PantryList({ food, navigation, deleteHandler }) {
             renderItem={({ item }) =>
                 <FoodItem
                     name={item.item}
-                    date={item.date}
+                    date={new Date(item.date)}
                     quant={item.quant}
                     id={item.id}
                     handler={deleteHandler}
@@ -69,12 +68,18 @@ const styles = StyleSheet.create({
         //resizeMode: "contain",
         alignSelf: "center",
     },
-    itemText: {
-        marginTop: 8,
+    red: {
+        marginTop: 0,
         fontSize: 10,
         fontWeight: "bold",
         textAlign: "center",
-        //resizeMode: "contain",
+        color: 'red'
+    },
+    itemText: {
+        marginTop: 0,
+        fontSize: 10,
+        fontWeight: "bold",
+        textAlign: "center",
     },
     card: {
         backgroundColor: "white",

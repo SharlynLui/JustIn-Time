@@ -17,6 +17,12 @@ const About = () => {
         reminders when nearing expiry, providing recipes and replenishment
         recommendations based on available groceries and consumption habits.
       </Text>
+      <Text style={styles.paragraph}>
+        To add: Key in items, expiry date and select photos from library or just take a picture!
+      </Text>
+      <Text style={styles.paragraph}>
+        To delete: Long press on item to remove it from the pantry hassle free!
+      </Text>
     </View>
   );
 };
@@ -36,6 +42,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 14,
+    padding: 10,
     //textAlign: "center",
   },
   justintime: {
