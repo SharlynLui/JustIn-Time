@@ -10,11 +10,12 @@ const FoodItem = ({ name, date, id, quant, image, handler }) => (
         <View style={styles.card}>
             <Image source={{ uri: image }} style={styles.itemImage} />
             <Text style={styles.itemText}>{name}</Text>
-            <Text style={ (date)-(Date.now())<7? styles.red: styles.itemText} >Expires on:{date !== null ? date.toLocaleDateString() : "No Date Input"}</Text>
+            <Text style={(((date.getTime())-(Date.now()))/86400000)<7? styles.red: styles.itemText} >Expires on:{date !== null ? date.toLocaleDateString() : "No Date Input"}</Text>
             <Text style={styles.itemText}>Quantity:{quant}</Text>
         </View>
     </Pressable>
 );
+
 
 
 function PantryList({ food, navigation, deleteHandler }) {

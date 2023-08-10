@@ -59,6 +59,16 @@ function Pantry({ navigation }) {
     }
   };
 
+  const getMaxId = () => {
+    id = 0
+    for (let i = 0; i < entriesAdded.length; i++) {
+      if (entriesAdded[i].id >= id){
+        id = entriesAdded[i].id+1
+      }
+    }
+    return id
+  }
+
   const auth = getAuth(app);
   const handleSignOut = () => {
     signOut(auth)
@@ -70,20 +80,6 @@ function Pantry({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          onPress={() => navigation.push("Pantry")}
-          style={styles.fridgebutton}
-        >
-          <Text style={styles.sliderText}>Fridge</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.push("Freezer")}
-          style={styles.freezerbutton}
-        >
-          <Text style={styles.sliderText}>Freezer</Text>
-        </TouchableOpacity>
-      </View>
       <View>
         {/* 'add' button */}
         <View style={styles.buttonContainer}>
@@ -91,10 +87,7 @@ function Pantry({ navigation }) {
             onPress={() => {
               navigation.navigate("Add", {
                 handler: handler,
-                id:
-                  entriesAdded.length == 0
-                    ? 0
-                    : entriesAdded[entriesAdded.length - 1].id + 1,
+                id: getMaxId(),
               });
             }}
             style={styles.button}

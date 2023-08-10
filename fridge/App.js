@@ -5,7 +5,6 @@ import Login from "./screens/Login";
 import Pantry from "./screens/Pantry";
 import About from "./screens/About";
 import Add from "./screens/Add";
-import Freezer from "./screens/Freezer";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +16,6 @@ const App = () => {
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="Add" component={Add} />
         <Stack.Screen name="Pantry" component={Pantry} />
-        <Stack.Screen name="Freezer" component={Freezer} />
       </Stack.Navigator>
     </NavigationContainer>
   );
