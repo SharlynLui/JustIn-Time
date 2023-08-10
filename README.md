@@ -2,9 +2,6 @@
 **Orbital Group:** 5685
 **Proposed Level of Achievement:** Gemini
 
-## Project Scope
-(one sentence + longer descriptive version)
-
 ## Motivation
 After staying in the hall, we realised that we always forget groceries in the fridge or sometimes they are just hidden from sight, causing them to eventually go bad
 . 
@@ -23,10 +20,16 @@ Thus, we had the inspiration to create this app which would have reduce the amou
 "As a frugal household member, I would not want my hard-earned money to be wasted by throwing away food that could have been eaten."
 
 ## Core Features
+1. Login/Register page: This feature allows new users to register for an account, or existing users to log in to their account so that they will be able to access the same fridge as their household members.
 
-## Design
+2. Database: Use of Firebase Authentication to register and log in users.
 
-## Plan
+3. Inventory: A fridge-like interface that allows users to view available food items, their expiry date, and the quantity left.
+
+4. Inventory will push items with a nearing expiry date to the top to remind users to consume them soon.
+
+5. Enter new food: Form for users to enter new food, take a picture of expiry, and amount used.
+
 
 
 
