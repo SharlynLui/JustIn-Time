@@ -4,19 +4,16 @@ import {
   View,
   Text,
   TextInput,
-  PermissionsAndroid,
-  Button,
-  ScrollView,
   TouchableOpacity,
   Image,
+  ScrollView
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
-const exampleImage = require('../assets/food.png')
-const exampleImageUri = Image.resolveAssetSource(exampleImage).uri
+const exampleImage = require('../assets/food.png');
+const exampleImageUri = Image.resolveAssetSource(exampleImage).uri;
 
 
 export default function Add({ navigation, route }) {
@@ -39,7 +36,7 @@ export default function Add({ navigation, route }) {
     }
   };
 
-  //functions to fetch user inputs as user types in the sections
+  //functions to fetch user inputs as user types in the containers
   function itemInputHandler(enteredItem) {
     setEnteredItem(enteredItem);
   }
@@ -48,7 +45,7 @@ export default function Add({ navigation, route }) {
   }
 
 
-  //function to output Entry
+  //function to store new entry
   function addEntryHandler() {
     const newEntry = {
       item: enteredItem,
@@ -87,22 +84,32 @@ export default function Add({ navigation, route }) {
       quality: 1,
     });
     if (!result.canceled) {
-      setCameraPhoto(result.uri);
+      setGalleryPhoto(result.uri);
     }
     console.log(result.uri);
   }
 
   return (
-    <View style={styles.addContainer}>
-      <View style={styles.topRow}>
-        <TouchableOpacity style={styles.button}
-          onPress={
-            () => { addEntryHandler() }
-          }
+    <ScrollView style={styles.addContainer}>
+      <View style={styles.icons}>
+        <View>
+        <TouchableOpacity style={styles.cameraButton}
+          onPress={() => openCamera()}
         >
-          <Text style={styles.buttonText}>Done</Text>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/camera.png")}
+          ></Image>
         </TouchableOpacity>
-      </View>
+        </View>
+        <View>
+        <TouchableOpacity onPress={openGallery} style={styles.cameraButton}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/gallery.png")}
+          ></Image>
+        </TouchableOpacity>
+      </View></View>
       <View style={styles.details}>
         <Text style={styles.label}>Item:</Text>
         <View style={styles.inputContainer}>
@@ -116,20 +123,10 @@ export default function Add({ navigation, route }) {
           </View>
           {!isPickerShow ? (
             <View>
-              <Button title ="Show Picker" color="black" onPress = {showPicker} />
+              <TouchableOpacity onPress={showPicker} style={styles.button}><Text style={styles.buttonText}>Show Picker</Text></TouchableOpacity>
               </View>
           ): (
         <DateTimePicker
-          // style={styles.datePicker}
-          // date={enteredDate}
-          // mode="date"
-          // placeholder="Select Date"
-          // format="YYYY-MM-DD"
-          // minDate="2023-01-01"
-          // maxDate="2123-01-01"
-          // confirmBtnText="Confirm"
-          // cancelBtnText="Cancel"
-          // onDateChange={(date) => dateInputHandler(date)}
           value={enteredDate}
           mode={'date'}
           is24Hour={true}
@@ -147,44 +144,23 @@ export default function Add({ navigation, route }) {
             onChangeText={quantInputHandler}
           />
         </View>
-        <Text style={styles.label}>Image: </Text>
       </View>
-
-      <View style={styles.camera}>
-        <TouchableOpacity
-          onPress={() => openCamera()}
-          style={styles.cameraButton}
-        >
-          <Image
-            style={{ width: 30, height: 30 }}
-            source={require("../assets/camera.png")}
-          ></Image>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={openGallery} style={styles.cameraButton}>
-          <Image
-            style={{ width: 30, height: 30 }}
-            source={require("../assets/gallery.png")}
-          ></Image>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.topRow}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            addEntryHandler();
-          }}
+        <TouchableOpacity style={styles.button}
+          onPress={
+            () => { addEntryHandler() }
+          }
         >
           <Text style={styles.buttonText}>Done</Text>
         </TouchableOpacity>
       </View>
-    </View >
+    </ScrollView >
   );
 }
 
 const styles = StyleSheet.create({
   details: {
-    height: "70%",
+    //height: "70%",
   },
   label: {
     fontSize: 20,
@@ -199,13 +175,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 15,
     borderRadius: 10,
-    height: "20%",
-  },
-  container: {
-    backgroundColor: "#ebebeb",
-    flex: 1,
-    alignItems: 'center',
-    //justifyContent: 'center',
+    height: 90,
   },
   button: {
     backgroundColor: "#e28743",
@@ -223,41 +193,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   addContainer: {
-    flexDirection: "column",
+  flexDirection: "column",
     padding: 5,
   },
   topRow: {
     width: "40%",
-    marginLeft: 115, //could not get button to align centre so padded manually, adjust if needed
+    marginLeft: 110, //could not get button to align centre so padded manually, adjust if needed
     paddingTop: 10,
   },
-  camera: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    padding: 15,
-    margin: 15,
-    borderRadius: 10,
-    height: "13%",
-    alignItems: "center",
+  icons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   cameraButton: {
-    backgroundColor: "white",
     padding: 15,
     margin: 5,
     marginRight: 15,
     marginLeft: 15,
     borderRadius: 10,
     alignItems: "center",
-  },
-  datePicker: {
-    width: '100%'
-  },
-  pickedDateContainer: {
-  },
-  pickedDate: {
-
-  },
-  btnContainer: {
-
-  },
+  }
 });
